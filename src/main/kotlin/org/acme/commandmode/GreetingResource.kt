@@ -1,20 +1,25 @@
 package org.acme.commandmode
 
-import javax.ws.rs.GET
-import javax.ws.rs.POST
-import javax.ws.rs.PUT
-import javax.ws.rs.DELETE
-import javax.ws.rs.Path
-import javax.ws.rs.Produces
-import javax.ws.rs.Consumes
+import javax.validation.constraints.NotBlank
+import javax.ws.rs.*
+import javax.ws.rs.core.Context
 import javax.ws.rs.core.MediaType
+import javax.ws.rs.core.UriInfo
 
 @Path("/hello") // define url path
 class GreetingResource {
 
+    companion object {
+        enum class Order { desc, asc; }
+    }
+
     @GET //action to http get
     @Produces(MediaType.APPLICATION_JSON) // define media type are returned
-    fun hello(): String {
+    fun hello(
+        @Context uriInfo: UriInfo,
+        @QueryParam("order") order: Order,
+        @NotBlank @HeaderParam("authorization") authorization: String
+    ): String {
         return "hello minato rak"
     }
 
